@@ -70,4 +70,4 @@ EOF
 chmod a+x "${ORIG_PWD}/test/check.sh"
 
 echo "Script to test is:"
-cat ${ORIG_PWD}/test/check.sh"
+cat "${ORIG_PWD}/test/check.sh"
