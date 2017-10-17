@@ -1,0 +1,5 @@
+---
+buildpack: binary_buildpack
+memory: 256M
+applications:
+- name: cf-healthcheck

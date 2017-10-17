@@ -1,0 +1,37 @@
+---
+jobs:
+- name: g-healthcheck
+  serial: true
+  plan:
+  - get: src
+    trigger: true
+
+  - task: build
+    file: src/ci/build.yml
+    params:
+      DOMAIN: system.g.cld.gov.au
+
+  - put: g-cf
+    params:
+      manifest: manifest/manifest.yml
+      path: build
+      current_app_name: cf-healthcheck
+
+  - task: test
+    file: src/ci/test.yml
+
+resources:
+- name: src
+  type: git
+  source:
+    uri: https://github.com/govau/cf-healthcheck
+    branch: master
+
+- name: g-cf
+  type: cf
+  source:
+    api: https://api.system.g.cld.gov.au
+    username: ci-system-db-export
+    password: ((g-password))
+    organization: system
+    space: cf-healthcheck

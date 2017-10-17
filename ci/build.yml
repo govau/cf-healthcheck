@@ -1,0 +1,25 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: govau/cga-cf-bosh-cli
+    tag: latest
+
+params:
+  DOMAIN:
+
+inputs:
+- name: src
+
+outputs:
+- name: build
+- name: manifest
+- name: test
+
+caches:
+- path: src/.glide_cache
+
+run:
+  path: src/ci/build.sh

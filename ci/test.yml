@@ -1,0 +1,14 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: govau/cga-cf-bosh-cli
+    tag: latest
+
+inputs:
+- name: test
+
+run:
+  path: test/check.sh
