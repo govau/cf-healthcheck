@@ -31,7 +31,7 @@ resources:
   type: cf
   source:
     api: https://api.system.g.cld.gov.au
-    username: ci-system-db-export
+    username: ci-system-cf-healthcheck
     password: ((g-password))
     organization: system
     space: cf-healthcheck
