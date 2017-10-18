@@ -3,24 +3,59 @@ jobs:
 - name: g-healthcheck
   serial: true
   plan:
-  - get: src
+  - get: 5m
     trigger: true
+
+  - get: src
 
   - task: build
     file: src/ci/build.yml
     params:
       DOMAIN: system.g.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
   - put: g-cf
     params:
       manifest: manifest/manifest.yml
       path: build
       current_app_name: cf-healthcheck
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
   - task: test
     file: src/ci/test.yml
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
 
 resources:
+- name: slack
+  type: slack-notification
+  source:
+    url: ((slack-webhook-url))
+
+- name: 5m
+  type: time
+  source: {interval: 5m}
+
 - name: src
   type: git
   source:
