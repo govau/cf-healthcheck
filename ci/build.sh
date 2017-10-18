@@ -64,7 +64,7 @@ set -u
 
 RESULT="\$(curl "http://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
 
-[[] "\${RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+[[ "\${RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
 EOF
 
 chmod a+x "${ORIG_PWD}/test/check.sh"
