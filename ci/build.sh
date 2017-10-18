@@ -53,7 +53,7 @@ cp "${ORIG_PWD}/src/manifest-template.yml" "${ORIG_PWD}/manifest/manifest.yml"
 printf "\ndomain: $DOMAIN\n" >> "${ORIG_PWD}/manifest/manifest.yml"
 
 # Write SHA256
-EXPECTED_RESULT="0$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json" | sed 's/^.* //')"
+EXPECTED_RESULT="$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json" | sed 's/^.* //')"
 cat <<EOF > "${ORIG_PWD}/test/check.sh"
 #!/bin/bash
 
