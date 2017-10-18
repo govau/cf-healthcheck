@@ -53,7 +53,7 @@ cp "${ORIG_PWD}/src/manifest-template.yml" "${ORIG_PWD}/manifest/manifest.yml"
 printf "\ndomain: $DOMAIN\n" >> "${ORIG_PWD}/manifest/manifest.yml"
 
 # Write SHA256
-EXPECTED_RESULT="$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json")"
+EXPECTED_RESULT="$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json" | sed 's/^.* //')"
 cat <<EOF > "${ORIG_PWD}/test/check.sh"
 #!/bin/bash
 
@@ -62,7 +62,7 @@ set -x
 set -o pipefail
 set -u
 
-RESULT="\$(curl "http://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256)"
+RESULT="\$(curl "http://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
 
 [[ "\${RESULT}" -eq "${EXPECTED_RESULT}" ]] || exit 1
 EOF
