@@ -1,5 +1,85 @@
 ---
 jobs:
+- name: b-healthcheck
+  serial: true
+  plan:
+  - get: 5m
+    trigger: true
+
+  - get: src
+
+  - task: build
+    file: src/ci/build.yml
+    params:
+      DOMAIN: system.b.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - put: b-cf
+    params:
+      manifest: manifest/manifest.yml
+      path: build
+      current_app_name: cf-healthcheck
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - task: test
+    file: src/ci/test.yml
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+- name: d-healthcheck
+  serial: true
+  plan:
+  - get: 5m
+    trigger: true
+
+  - get: src
+
+  - task: build
+    file: src/ci/build.yml
+    params:
+      DOMAIN: system.d.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - put: d-cf
+    params:
+      manifest: manifest/manifest.yml
+      path: build
+      current_app_name: cf-healthcheck
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - task: test
+    file: src/ci/test.yml
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
 - name: g-healthcheck
   serial: true
   plan:
@@ -20,6 +100,46 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
   - put: g-cf
+    params:
+      manifest: manifest/manifest.yml
+      path: build
+      current_app_name: cf-healthcheck
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - task: test
+    file: src/ci/test.yml
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+- name: y-healthcheck
+  serial: true
+  plan:
+  - get: 5m
+    trigger: true
+
+  - get: src
+
+  - task: build
+    file: src/ci/build.yml
+    params:
+      DOMAIN: system.y.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+  - put: y-cf
     params:
       manifest: manifest/manifest.yml
       path: build
@@ -62,11 +182,38 @@ resources:
     uri: https://github.com/govau/cf-healthcheck
     branch: master
 
+- name: b-cf
+  type: cf
+  source:
+    api: https://api.system.b.cld.gov.au
+    username: ci-system-cf-healthcheck
+    password: ((b-password))
+    organization: system
+    space: cf-healthcheck
+
+- name: d-cf
+  type: cf
+  source:
+    api: https://api.system.d.cld.gov.au
+    username: ci-system-cf-healthcheck
+    password: ((d-password))
+    organization: system
+    space: cf-healthcheck
+
 - name: g-cf
   type: cf
   source:
     api: https://api.system.g.cld.gov.au
     username: ci-system-cf-healthcheck
     password: ((g-password))
+    organization: system
+    space: cf-healthcheck
+
+- name: y-cf
+  type: cf
+  source:
+    api: https://api.system.y.cld.gov.au
+    username: ci-system-cf-healthcheck
+    password: ((y-password))
     organization: system
     space: cf-healthcheck
