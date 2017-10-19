@@ -3,36 +3,22 @@ jobs:
 - name: b-healthcheck
   serial: true
   plan:
-  - get: 5m
-    trigger: true
-
-  - get: src
-
-  - task: build
-    file: src/ci/build.yml
-    params:
-      DOMAIN: system.b.cld.gov.au
-    on_failure:
-      put: slack
+  - do:
+    - get: 5m
+      trigger: true
+    - get: src
+    - task: build
+      file: src/ci/build.yml
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-
-  - put: b-cf
-    params:
-      manifest: manifest/manifest.yml
-      path: build
-      current_app_name: cf-healthcheck
-    on_failure:
-      put: slack
+        DOMAIN: system.b.cld.gov.au
+    - put: b-cf
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        manifest: manifest/manifest.yml
+        path: build
+        current_app_name: cf-healthcheck
+    - task: test
+      file: src/ci/test.yml
 
-  - task: test
-    file: src/ci/test.yml
     on_failure:
       put: slack
       params:
@@ -43,36 +29,22 @@ jobs:
 - name: d-healthcheck
   serial: true
   plan:
-  - get: 5m
-    trigger: true
-
-  - get: src
-
-  - task: build
-    file: src/ci/build.yml
-    params:
-      DOMAIN: system.d.cld.gov.au
-    on_failure:
-      put: slack
+  - do:
+    - get: 5m
+      trigger: true
+    - get: src
+    - task: build
+      file: src/ci/build.yml
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-
-  - put: d-cf
-    params:
-      manifest: manifest/manifest.yml
-      path: build
-      current_app_name: cf-healthcheck
-    on_failure:
-      put: slack
+        DOMAIN: system.d.cld.gov.au
+    - put: d-cf
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        manifest: manifest/manifest.yml
+        path: build
+        current_app_name: cf-healthcheck
+    - task: test
+      file: src/ci/test.yml
 
-  - task: test
-    file: src/ci/test.yml
     on_failure:
       put: slack
       params:
@@ -83,36 +55,22 @@ jobs:
 - name: g-healthcheck
   serial: true
   plan:
-  - get: 5m
-    trigger: true
-
-  - get: src
-
-  - task: build
-    file: src/ci/build.yml
-    params:
-      DOMAIN: system.g.cld.gov.au
-    on_failure:
-      put: slack
+  - do:
+    - get: 5m
+      trigger: true
+    - get: src
+    - task: build
+      file: src/ci/build.yml
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-
-  - put: g-cf
-    params:
-      manifest: manifest/manifest.yml
-      path: build
-      current_app_name: cf-healthcheck
-    on_failure:
-      put: slack
+        DOMAIN: system.g.cld.gov.au
+    - put: g-cf
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        manifest: manifest/manifest.yml
+        path: build
+        current_app_name: cf-healthcheck
+    - task: test
+      file: src/ci/test.yml
 
-  - task: test
-    file: src/ci/test.yml
     on_failure:
       put: slack
       params:
@@ -123,36 +81,22 @@ jobs:
 - name: y-healthcheck
   serial: true
   plan:
-  - get: 5m
-    trigger: true
-
-  - get: src
-
-  - task: build
-    file: src/ci/build.yml
-    params:
-      DOMAIN: system.y.cld.gov.au
-    on_failure:
-      put: slack
+  - do:
+    - get: 5m
+      trigger: true
+    - get: src
+    - task: build
+      file: src/ci/build.yml
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-
-  - put: y-cf
-    params:
-      manifest: manifest/manifest.yml
-      path: build
-      current_app_name: cf-healthcheck
-    on_failure:
-      put: slack
+        DOMAIN: system.y.cld.gov.au
+    - put: y-cf
       params:
-        text: |
-          :x: $BUILD_JOB_NAME FAILED
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        manifest: manifest/manifest.yml
+        path: build
+        current_app_name: cf-healthcheck
+    - task: test
+      file: src/ci/test.yml
 
-  - task: test
-    file: src/ci/test.yml
     on_failure:
       put: slack
       params:
