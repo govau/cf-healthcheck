@@ -122,6 +122,60 @@ jobs:
           :x: $BUILD_JOB_NAME FAILED
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
+- name: d-probe
+  serial: true
+  plan:
+  - do:
+    - get: 30s
+      trigger: true
+    - get: src
+    - task: probe
+      file: src/ci/probe.yml
+      params:
+        DOMAIN: system.d.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+- name: g-probe
+  serial: true
+  plan:
+  - do:
+    - get: 30s
+      trigger: true
+    - get: src
+    - task: probe
+      file: src/ci/probe.yml
+      params:
+        DOMAIN: system.g.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
+- name: y-probe
+  serial: true
+  plan:
+  - do:
+    - get: 30s
+      trigger: true
+    - get: src
+    - task: probe
+      file: src/ci/probe.yml
+      params:
+        DOMAIN: system.y.cld.gov.au
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: $BUILD_JOB_NAME FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+
 resource_types:
 - name: slack-notification
   type: docker-image
