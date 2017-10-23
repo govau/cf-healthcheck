@@ -14,4 +14,4 @@ params:
   DOMAIN:
 
 run:
-  path: src/probe.sh
+  path: src/ci/probe.sh
