@@ -16,6 +16,7 @@ jobs:
         manifest: manifest/manifest.yml
         path: build
         current_app_name: cf-healthcheck
+        show_app_log: true
     - task: test
       file: src/ci/test.yml
 
@@ -42,6 +43,7 @@ jobs:
         manifest: manifest/manifest.yml
         path: build
         current_app_name: cf-healthcheck
+        show_app_log: true
     - task: test
       file: src/ci/test.yml
 
@@ -68,6 +70,7 @@ jobs:
         manifest: manifest/manifest.yml
         path: build
         current_app_name: cf-healthcheck
+        show_app_log: true
     - task: test
       file: src/ci/test.yml
 
@@ -94,6 +97,7 @@ jobs:
         manifest: manifest/manifest.yml
         path: build
         current_app_name: cf-healthcheck
+        show_app_log: true
     - task: test
       file: src/ci/test.yml
 
@@ -181,6 +185,11 @@ resource_types:
   type: docker-image
   source:
     repository: cfcommunity/slack-notification-resource
+- name: govau-cf
+  type: docker-image
+  source:
+    repository: govau/cf-resource
+    tag: venapp
 
 resources:
 - name: slack
@@ -203,7 +212,7 @@ resources:
     branch: master
 
 - name: b-cf
-  type: cf
+  type: govau-cf
   source:
     api: https://api.system.b.cld.gov.au
     username: ci-system-cf-healthcheck
@@ -212,7 +221,7 @@ resources:
     space: cf-healthcheck
 
 - name: d-cf
-  type: cf
+  type: govau-cf
   source:
     api: https://api.system.d.cld.gov.au
     username: ci-system-cf-healthcheck
@@ -221,7 +230,7 @@ resources:
     space: cf-healthcheck
 
 - name: g-cf
-  type: cf
+  type: govau-cf
   source:
     api: https://api.system.g.cld.gov.au
     username: ci-system-cf-healthcheck
@@ -230,7 +239,7 @@ resources:
     space: cf-healthcheck
 
 - name: y-cf
-  type: cf
+  type: govau-cf
   source:
     api: https://api.system.y.cld.gov.au
     username: ci-system-cf-healthcheck
