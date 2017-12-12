@@ -10,7 +10,7 @@ jobs:
     - task: build
       file: src/ci/build.yml
       params:
-        DOMAIN: system.b.cld.gov.au
+        DOMAIN: b.cld.gov.au
     - put: b-cf
       params:
         manifest: manifest/manifest.yml
@@ -37,7 +37,7 @@ jobs:
     - task: build
       file: src/ci/build.yml
       params:
-        DOMAIN: system.d.cld.gov.au
+        DOMAIN: d.cld.gov.au
     - put: d-cf
       params:
         manifest: manifest/manifest.yml
@@ -64,7 +64,7 @@ jobs:
     - task: build
       file: src/ci/build.yml
       params:
-        DOMAIN: system.g.cld.gov.au
+        DOMAIN: g.cld.gov.au
     - put: g-cf
       params:
         manifest: manifest/manifest.yml
@@ -91,7 +91,7 @@ jobs:
     - task: build
       file: src/ci/build.yml
       params:
-        DOMAIN: system.y.cld.gov.au
+        DOMAIN: y.cld.gov.au
     - put: y-cf
       params:
         manifest: manifest/manifest.yml
@@ -118,7 +118,7 @@ jobs:
     - task: probe
       file: src/ci/probe.yml
       params:
-        DOMAIN: system.b.cld.gov.au
+        DOMAIN: b.cld.gov.au
     on_failure:
       put: slack
       params:
@@ -136,7 +136,7 @@ jobs:
     - task: probe
       file: src/ci/probe.yml
       params:
-        DOMAIN: system.d.cld.gov.au
+        DOMAIN: d.cld.gov.au
     on_failure:
       put: slack
       params:
@@ -154,7 +154,7 @@ jobs:
     - task: probe
       file: src/ci/probe.yml
       params:
-        DOMAIN: system.g.cld.gov.au
+        DOMAIN: g.cld.gov.au
     on_failure:
       put: slack
       params:
@@ -172,7 +172,7 @@ jobs:
     - task: probe
       file: src/ci/probe.yml
       params:
-        DOMAIN: system.y.cld.gov.au
+        DOMAIN: y.cld.gov.au
     on_failure:
       put: slack
       params:
