@@ -50,7 +50,12 @@ cp -R \
 
 # Write manifest
 cp "${ORIG_PWD}/src/manifest-template.yml" "${ORIG_PWD}/manifest/manifest.yml"
-printf "\ndomain: system.$DOMAIN\n" >> "${ORIG_PWD}/manifest/manifest.yml"
+cat <<EOF >> ${ORIG_PWD}/manifest/manifest.yml
+routes:
+- route: cf-healthcheck.system.${DOMAIN} # route with the system wildcard cert
+- route: cf-healthcheck.${DOMAIN}        # route with a custom cert
+EOF
+
 
 # Write SHA256
 EXPECTED_RESULT="$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json" | sed 's/^.* //')"
