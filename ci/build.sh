@@ -67,9 +67,14 @@ set -x
 set -o pipefail
 set -u
 
-RESULT="\$(curl "http://cf-healthcheck.system.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
+SYSTEM_RESULT="\$(curl "https://cf-healthcheck.system.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
 
-[[ "\${RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+[[ "\${SYSTEM_RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+
+CUSTOM_DOMAIN_RESULT="\$(curl "https://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
+
+[[ "\${CUSTOM_DOMAIN_RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+
 EOF
 
 chmod a+x "${ORIG_PWD}/test/check.sh"
