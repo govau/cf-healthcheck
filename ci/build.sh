@@ -50,7 +50,12 @@ cp -R \
 
 # Write manifest
 cp "${ORIG_PWD}/src/manifest-template.yml" "${ORIG_PWD}/manifest/manifest.yml"
-printf "\ndomain: $DOMAIN\n" >> "${ORIG_PWD}/manifest/manifest.yml"
+cat <<EOF >> ${ORIG_PWD}/manifest/manifest.yml
+routes:
+- route: cf-healthcheck.system.${DOMAIN} # route with the system wildcard cert
+- route: cf-healthcheck.${DOMAIN}        # route with a custom cert
+EOF
+
 
 # Write SHA256
 EXPECTED_RESULT="$(openssl dgst -sha256 < "${ORIG_PWD}/src/data/status.json" | sed 's/^.* //')"
@@ -62,9 +67,14 @@ set -x
 set -o pipefail
 set -u
 
-RESULT="\$(curl "http://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
+SYSTEM_RESULT="\$(curl "https://cf-healthcheck.system.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
 
-[[ "\${RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+[[ "\${SYSTEM_RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+
+CUSTOM_DOMAIN_RESULT="\$(curl "https://cf-healthcheck.${DOMAIN}" | openssl dgst -sha256 | sed 's/^.* //')"
+
+[[ "\${CUSTOM_DOMAIN_RESULT}" == "${EXPECTED_RESULT}" ]] || exit 1
+
 EOF
 
 chmod a+x "${ORIG_PWD}/test/check.sh"
