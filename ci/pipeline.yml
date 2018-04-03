@@ -1,6 +1,7 @@
 ---
 jobs:
 - name: b-healthcheck
+  build_logs_to_retain: 14400 # 30 days
   serial: true
   plan:
   - do:
@@ -28,6 +29,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: d-healthcheck
+  build_logs_to_retain: 14400 # 30 days
   serial: true
   plan:
   - do:
@@ -55,6 +57,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: g-healthcheck
+  build_logs_to_retain: 14400 # 30 days
   serial: true
   plan:
   - do:
@@ -82,6 +85,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: y-healthcheck
+  build_logs_to_retain: 14400 # 30 days
   serial: true
   plan:
   - do:
@@ -109,6 +113,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: b-probe
+  build_logs_to_retain: 86400 # 30 days
   serial: true
   plan:
   - do:
@@ -127,6 +132,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: d-probe
+  build_logs_to_retain: 86400 # 30 days
   serial: true
   plan:
   - do:
@@ -145,6 +151,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: g-probe
+  build_logs_to_retain: 86400 # 30 days
   serial: true
   plan:
   - do:
@@ -163,6 +170,7 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
 - name: y-probe
+  build_logs_to_retain: 86400 # 30 days
   serial: true
   plan:
   - do:
