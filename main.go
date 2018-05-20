@@ -16,6 +16,7 @@ func main() {
 	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
 		_, err := w.Write(data)
 		if err != nil {
 			panic(err)
