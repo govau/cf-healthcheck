@@ -31,7 +31,7 @@ jobs:
   serial: true
   plan:
   - do:
-    - get: 5m
+    - get: 5m-business-hours
       trigger: true
     - get: src
     - task: build
@@ -130,7 +130,7 @@ jobs:
   serial: true
   plan:
   - do:
-    - get: 30s
+    - get: 30s-business-hours
       trigger: true
     - get: src
     - task: probe
@@ -204,6 +204,24 @@ resources:
 - name: 30s
   type: time
   source: {interval: 30s}
+
+- name: 5m-business-hours
+  type: time
+  source:
+    days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+    start: 9:00 AM
+    stop: 5:00 PM
+    location: Australia/Sydney
+    source: {inteval: 5m}
+
+- name: 30s-business-hours
+  type: time
+  source:
+    days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+    start: 9:00 AM
+    stop: 5:00 PM
+    location: Australia/Sydney
+    source: {inteval: 30s}
 
 - name: src
   type: git
