@@ -212,7 +212,7 @@ resources:
     start: 9:00 AM
     stop: 5:00 PM
     location: Australia/Sydney
-    source: {inteval: 5m}
+    interval: 5m
 
 - name: 30s-business-hours
   type: time
@@ -221,7 +221,7 @@ resources:
     start: 9:00 AM
     stop: 5:00 PM
     location: Australia/Sydney
-    source: {inteval: 30s}
+    interval: 30s
 
 - name: src
   type: git
